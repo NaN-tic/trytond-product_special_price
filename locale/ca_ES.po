@@ -1,0 +1,27 @@
+# 
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:product.product,special_price:"
+msgid "Special Price"
+msgstr "Preu especial"
+
+msgctxt "field:sale.shop,special_price:"
+msgid "Apply Special Price"
+msgstr "Aplica preu especial"
+
+msgctxt "field:sale.shop,special_pricelist_id:"
+msgid "Special Pricelist"
+msgstr "Tarifa especial"
+
+msgctxt "field:sale.shop,type_special_price:"
+msgid "Price"
+msgstr "Preu"
+
+msgctxt "selection:sale.shop,type_special_price:"
+msgid "Special Price"
+msgstr "Preu especial"
+
+msgctxt "selection:sale.shop,type_special_price:"
+msgid "Special Pricelist"
+msgstr "Tarifa especial"
