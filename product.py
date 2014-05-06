@@ -19,6 +19,8 @@ class Template:
     __name__ = 'product.template'
     special_price = fields.Property(fields.Numeric('Special Price',
             states=STATES, digits=(16, 4), depends=DEPENDS))
+    special_price_from = fields.Date('Special Price From')
+    special_price_to = fields.Date('Special Price To')
 
 
 class Product:
@@ -26,7 +28,10 @@ class Product:
 
     @classmethod
     def get_sale_price(cls, products, quantity=0):
+        Date = Pool().get('ir.date')
+
         prices = super(Product, cls).get_sale_price(products, quantity)
+        today = Date.today()
 
         if (Transaction().context.get('customer')):
             User = Pool().get('res.user')
@@ -35,6 +40,9 @@ class Product:
             user = User(Transaction().user)
             if user.shop and user.shop.special_price:
                 for product in products:
+                    if product.special_price_from and product.special_price_to:
+                        if not (product.special_price_from <= today <= product.special_price_to):
+                            continue
                     special_price = 0.0
                     if user.shop.type_special_price == 'pricelist':
                         price_list = PriceList(user.shop.special_pricelist)
