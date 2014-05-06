@@ -6,9 +6,25 @@ msgctxt "field:product.product,special_price:"
 msgid "Special Price"
 msgstr "Preu especial"
 
+msgctxt "field:product.template,special_price:"
+msgid "Special Price"
+msgstr "Preu especial"
+
+msgctxt "field:product.template,special_price_from:"
+msgid "Special Price From"
+msgstr "Preu especial desde"
+
+msgctxt "field:product.template,special_price_to:"
+msgid "Special Price To"
+msgstr "Preu especial fins a"
+
 msgctxt "field:sale.shop,special_price:"
 msgid "Apply Special Price"
 msgstr "Aplica preu especial"
+
+msgctxt "field:sale.shop,special_pricelist:"
+msgid "Special Pricelist"
+msgstr "Tarifa especial"
 
 msgctxt "field:sale.shop,special_pricelist_id:"
 msgid "Special Pricelist"
