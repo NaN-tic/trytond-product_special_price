@@ -31,8 +31,8 @@ msgid "Special Pricelist"
 msgstr "Tarifa especial"
 
 msgctxt "field:sale.shop,type_special_price:"
-msgid "Price"
-msgstr "Preu"
+msgid "Special Price"
+msgstr "Preu especial"
 
 msgctxt "selection:sale.shop,type_special_price:"
 msgid "Special Price"
