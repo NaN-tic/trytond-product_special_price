@@ -31,11 +31,15 @@ class Product:
         Date = Pool().get('ir.date')
 
         prices = super(Product, cls).get_sale_price(products, quantity)
-        today = Date.today()
+
+        if Transaction().context.get('without_special_price'):
+            return prices
 
         if (Transaction().context.get('customer')):
             User = Pool().get('res.user')
             PriceList = Pool().get('product.price_list')
+
+            today = Date.today()
 
             user = User(Transaction().user)
             if user.shop and user.shop.special_price:
