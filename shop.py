@@ -16,7 +16,7 @@ class SaleShop:
     type_special_price = fields.Selection([
             ('price', 'Special Price'),
             ('pricelist', 'Special Pricelist'),
-            ], 'Price', states={
+            ], 'Special Price', states={
                 'required': Eval('special_price', True),
             }, depends=['special_price'])
     special_pricelist = fields.Many2One('product.price_list', 
