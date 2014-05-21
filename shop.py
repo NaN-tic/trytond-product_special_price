@@ -21,8 +21,8 @@ class SaleShop:
             }, depends=['special_price'])
     special_pricelist = fields.Many2One('product.price_list', 
             'Special Pricelist', states={
-                'required': Eval('special_price', True),
-            }, depends=['special_price'])
+                'required': Eval('type_special_price') == 'pricelist',
+            }, depends=['type_special_price'])
 
     @staticmethod
     def default_type_special_price():
