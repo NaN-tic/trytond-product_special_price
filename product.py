@@ -28,7 +28,11 @@ class Product:
 
     @classmethod
     def get_sale_price(cls, products, quantity=0):
-        Date = Pool().get('ir.date')
+        pool = Pool()
+        Date = pool.get('ir.date')
+        User = pool.get('res.user')
+        PriceList = pool.get('product.price_list')
+        Uom = pool.get('product.uom')
 
         prices = super(Product, cls).get_sale_price(products, quantity)
 
@@ -36,9 +40,6 @@ class Product:
             return prices
 
         if (Transaction().context.get('customer')):
-            User = Pool().get('res.user')
-            PriceList = Pool().get('product.price_list')
-
             today = Date.today()
 
             user = User(Transaction().user)
@@ -51,8 +52,11 @@ class Product:
                     if user.shop.type_special_price == 'pricelist':
                         price_list = PriceList(user.shop.special_pricelist)
                         customer = Transaction().context['customer']
-                        uom = Transaction().context.get('uom', product.default_uom)
-
+                        uom_id = Transaction().context.get('uom', None)
+                        if uom_id:
+                            uom = Uom(uom_id)
+                        else:
+                            uom = product.default_uom
                         special_price = price_list.compute(customer, product,
                             prices[product.id], quantity, uom)
                     else:
