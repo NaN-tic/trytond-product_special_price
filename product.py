@@ -5,6 +5,8 @@ from trytond.pool import Pool, PoolMeta
 from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
+from trytond.config import CONFIG
+DIGITS = int(CONFIG.get('unit_price_digits', 4))
 
 __all__ = ['Template', 'Product']
 __metaclass__ = PoolMeta
@@ -18,7 +20,7 @@ DEPENDS = ['active']
 class Template:
     __name__ = 'product.template'
     special_price = fields.Property(fields.Numeric('Special Price',
-            states=STATES, digits=(16, 4), depends=DEPENDS))
+        states=STATES, digits=(16, DIGITS), depends=DEPENDS))
     special_price_from = fields.Date('Special Price From')
     special_price_to = fields.Date('Special Price To')
 
