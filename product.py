@@ -41,31 +41,28 @@ class Product:
         if Transaction().context.get('without_special_price'):
             return prices
 
-        if (Transaction().context.get('customer')):
-            today = Date.today()
-
-            user = User(Transaction().user)
-            if user.shop and user.shop.special_price:
-                for product in products:
-                    if product.special_price_from and product.special_price_to:
-                        if not (product.special_price_from <= today <= product.special_price_to):
-                            continue
-                    special_price = 0.0
-                    if user.shop.type_special_price == 'pricelist':
-                        price_list = PriceList(user.shop.special_pricelist)
-                        customer = Transaction().context['customer']
-                        uom_id = Transaction().context.get('uom', None)
-                        if uom_id:
-                            uom = Uom(uom_id)
-                        else:
-                            uom = product.default_uom
-                        special_price = price_list.compute(customer, product,
-                            prices[product.id], quantity, uom)
+        today = Date.today()
+        user = User(Transaction().user)
+        if user.shop and user.shop.special_price:
+            for product in products:
+                if product.special_price_from and product.special_price_to:
+                    if not (product.special_price_from <= today <= product.special_price_to):
+                        continue
+                special_price = 0.0
+                if user.shop.type_special_price == 'pricelist':
+                    price_list = PriceList(user.shop.special_pricelist)
+                    customer = Transaction().context['customer']
+                    uom_id = Transaction().context.get('uom', None)
+                    if uom_id:
+                        uom = Uom(uom_id)
                     else:
-                        special_price = product.special_price
+                        uom = product.default_uom
+                    special_price = price_list.compute(customer, product,
+                        prices[product.id], quantity, uom)
+                else:
+                    special_price = product.special_price
 
-                    if special_price != 0.0 and special_price != None and \
-                            special_price < prices[product.id]:
-                        prices[product.id] = special_price
-
+                if special_price != 0.0 and special_price != None and \
+                        special_price < prices[product.id]:
+                    prices[product.id] = special_price
         return prices
