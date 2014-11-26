@@ -6,7 +6,7 @@ from trytond.model import fields
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
 from trytond.config import config
-DIGITS = int(config.get('digits', 'unit_price_digits'))
+DIGITS = int(config.get('digits', 'unit_price_digits', 4))
 
 __all__ = ['Template', 'Product']
 __metaclass__ = PoolMeta
