@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- This file is part product_special_price module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/notebook/page[@id=&quot;prices&quot;]/field[@name=&quot;cost_price&quot;]" position="after">
+        <label name="special_price"/>
+        <field name="special_price"/>
+        <label name="special_price_from"/>
+        <field name="special_price_from"/>
+        <label name="special_price_to"/>
+        <field name="special_price_to"/>
+    </xpath>
+</data>
