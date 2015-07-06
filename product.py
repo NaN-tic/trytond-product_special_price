@@ -33,7 +33,6 @@ class Product:
         pool = Pool()
         Date = pool.get('ir.date')
         User = pool.get('res.user')
-        PriceList = pool.get('product.price_list')
         Uom = pool.get('product.uom')
 
         prices = super(Product, cls).get_sale_price(products, quantity)
@@ -50,15 +49,16 @@ class Product:
                         continue
                 special_price = 0.0
                 if user.shop.type_special_price == 'pricelist':
-                    price_list = PriceList(user.shop.special_pricelist)
-                    customer = Transaction().context['customer']
-                    uom_id = Transaction().context.get('uom', None)
-                    if uom_id:
-                        uom = Uom(uom_id)
-                    else:
-                        uom = product.default_uom
-                    special_price = price_list.compute(customer, product,
-                        prices[product.id], quantity, uom)
+                    customer = Transaction().context.get('customer')
+                    if customer:
+                        price_list = user.shop.special_pricelist
+                        uom_id = Transaction().context.get('uom', None)
+                        if uom_id:
+                            uom = Uom(uom_id)
+                        else:
+                            uom = product.default_uom
+                        special_price = price_list.compute(customer, product,
+                            prices[product.id], quantity, uom)
                 else:
                     special_price = product.special_price
 
