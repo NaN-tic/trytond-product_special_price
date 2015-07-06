@@ -49,16 +49,15 @@ class Product:
                         continue
                 special_price = 0.0
                 if user.shop.type_special_price == 'pricelist':
-                    customer = Transaction().context.get('customer')
-                    if customer:
-                        price_list = user.shop.special_pricelist
-                        uom_id = Transaction().context.get('uom', None)
-                        if uom_id:
-                            uom = Uom(uom_id)
-                        else:
-                            uom = product.default_uom
-                        special_price = price_list.compute(customer, product,
-                            prices[product.id], quantity, uom)
+                    price_list = user.shop.special_pricelist
+                    customer = Transaction().context.get('customer', None)
+                    uom_id = Transaction().context.get('uom', None)
+                    if uom_id:
+                        uom = Uom(uom_id)
+                    else:
+                        uom = product.default_uom
+                    special_price = price_list.compute(customer, product,
+                        prices[product.id], quantity, uom)
                 else:
                     special_price = product.special_price
 
