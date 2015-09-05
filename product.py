@@ -44,9 +44,12 @@ class Product:
         user = User(Transaction().user)
         if user.shop and user.shop.special_price:
             for product in products:
-                if product.special_price_from and product.special_price_to:
-                    if not (product.special_price_from <= today <= product.special_price_to):
-                        continue
+                if (product.special_price_from and
+                        today < product.special_price_from):
+                    continue
+                if (product.special_price_to and
+                        today > product.special_price_to):
+                    continue
                 special_price = 0.0
                 if user.shop.type_special_price == 'pricelist':
                     price_list = user.shop.special_pricelist
