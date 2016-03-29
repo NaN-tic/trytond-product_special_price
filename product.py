@@ -8,7 +8,6 @@ from trytond.transaction import Transaction
 from trytond.config import config as config_
 
 __all__ = ['Template', 'Product']
-__metaclass__ = PoolMeta
 
 STATES = {
     'readonly': ~Eval('active', True),
@@ -18,6 +17,7 @@ DIGITS = config_.getint('product', 'price_decimal', default=4)
 
 
 class Template:
+    __metaclass__ = PoolMeta
     __name__ = 'product.template'
     special_price = fields.Property(fields.Numeric('Special Price',
         states=STATES, digits=(16, DIGITS), depends=DEPENDS))
@@ -26,6 +26,7 @@ class Template:
 
 
 class Product:
+    __metaclass__ = PoolMeta
     __name__ = 'product.product'
 
     @classmethod

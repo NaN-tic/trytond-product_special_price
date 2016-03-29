@@ -6,10 +6,10 @@ from trytond.model import fields
 from trytond.pyson import Eval
 
 __all__ = ['SaleShop']
-__metaclass__ = PoolMeta
 
 
 class SaleShop:
+    __metaclass__ = PoolMeta
     __name__ = 'sale.shop'
 
     special_price = fields.Boolean('Apply Special Price')
