@@ -1,11 +1,15 @@
 # This file is part of product_special_price module for Tryton.
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
+from trytond import backend
 from trytond.pool import Pool, PoolMeta
-from trytond.model import fields
+from trytond.model import ModelSQL, fields
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
-from trytond.config import config as config_
+from trytond.tools.multivalue import migrate_property
+
+from trytond.modules.product.product import price_digits
+from trytond.modules.company.model import CompanyValueMixin
 
 __all__ = ['Template', 'Product']
 
@@ -13,16 +17,51 @@ STATES = {
     'readonly': ~Eval('active', True),
     }
 DEPENDS = ['active']
-DIGITS = config_.getint('product', 'price_decimal', default=4)
 
 
 class Template:
     __metaclass__ = PoolMeta
     __name__ = 'product.template'
-    special_price = fields.Property(fields.Numeric('Special Price',
-        states=STATES, digits=(16, DIGITS), depends=DEPENDS))
+    special_price = fields.MultiValue(fields.Numeric(
+            "Special Price", digits=price_digits,
+            states=STATES, depends=DEPENDS))
     special_price_from = fields.Date('Special Price From')
     special_price_to = fields.Date('Special Price To')
+
+    @classmethod
+    def multivalue_model(cls, field):
+        pool = Pool()
+        if field == 'special_price':
+            return pool.get('product.special_price')
+        return super(Template, cls).multivalue_model(field)
+
+
+class ProductSpecialPrice(ModelSQL, CompanyValueMixin):
+    "Product Special Price"
+    __name__ = 'product.special_price'
+
+    template = fields.Many2One(
+        'product.template', "Template", ondelete='CASCADE', select=True)
+    special_price = fields.Numeric("Special Price", digits=price_digits)
+
+    @classmethod
+    def __register__(cls, module_name):
+        TableHandler = backend.get('TableHandler')
+        exist = TableHandler.table_exist(cls._table)
+
+        super(ProductSpecialPrice, cls).__register__(module_name)
+
+        if not exist:
+            cls._migrate_property([], [], [])
+
+    @classmethod
+    def _migrate_property(cls, field_names, value_names, fields):
+        field_names.append('special_price')
+        value_names.append('special_price')
+        fields.append('company')
+        migrate_property(
+            'product.template', field_names, cls, value_names,
+            parent='template', fields=fields)
 
 
 class Product:
@@ -65,7 +104,8 @@ class Product:
                 else:
                     special_price = product.special_price
 
-                if special_price != 0.0 and special_price != None and \
-                        special_price < prices[product.id]:
+                if (special_price != 0.0
+                        and special_price is not None
+                        and special_price < prices[product.id]):
                     prices[product.id] = special_price
         return prices

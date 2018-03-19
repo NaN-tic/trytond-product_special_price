@@ -3,13 +3,13 @@
 # copyright notices and license terms.
 
 from trytond.pool import Pool
-from .shop import *
-from .product import *
+from . import shop
+from . import product
 
 
 def register():
     Pool.register(
-        SaleShop,
-        Template,
-        Product,
+        shop.SaleShop,
+        product.Template,
+        product.Product,
         module='product_special_price', type_='model')
