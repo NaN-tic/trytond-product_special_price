@@ -11,5 +11,6 @@ def register():
     Pool.register(
         shop.SaleShop,
         product.Template,
+        product.ProductSpecialPrice,
         product.Product,
         module='product_special_price', type_='model')
