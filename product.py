@@ -11,7 +11,7 @@ from trytond.tools.multivalue import migrate_property
 from trytond.modules.product.product import price_digits
 from trytond.modules.company.model import CompanyValueMixin
 
-__all__ = ['Template', 'Product']
+__all__ = ['Template', 'ProductSpecialPrice', 'Product']
 
 STATES = {
     'readonly': ~Eval('active', True),
@@ -25,6 +25,8 @@ class Template:
     special_price = fields.MultiValue(fields.Numeric(
             "Special Price", digits=price_digits,
             states=STATES, depends=DEPENDS))
+    special_prices = fields.One2Many(
+        'product.special_price', 'template', "Special Prices")
     special_price_from = fields.Date('Special Price From')
     special_price_to = fields.Date('Special Price To')
 
