@@ -19,8 +19,7 @@ STATES = {
 DEPENDS = ['active']
 
 
-class Template:
-    __metaclass__ = PoolMeta
+class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
     special_price = fields.MultiValue(fields.Numeric(
             "Special Price", digits=price_digits,
@@ -41,7 +40,6 @@ class Template:
 class ProductSpecialPrice(ModelSQL, CompanyValueMixin):
     "Product Special Price"
     __name__ = 'product.special_price'
-
     template = fields.Many2One(
         'product.template', "Template", ondelete='CASCADE', select=True)
     special_price = fields.Numeric("Special Price", digits=price_digits)
@@ -66,8 +64,7 @@ class ProductSpecialPrice(ModelSQL, CompanyValueMixin):
             parent='template', fields=fields)
 
 
-class Product:
-    __metaclass__ = PoolMeta
+class Product(metaclass=PoolMeta):
     __name__ = 'product.product'
 
     @classmethod

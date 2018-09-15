@@ -8,10 +8,8 @@ from trytond.pyson import Eval
 __all__ = ['SaleShop']
 
 
-class SaleShop:
-    __metaclass__ = PoolMeta
+class SaleShop(metaclass=PoolMeta):
     __name__ = 'sale.shop'
-
     special_price = fields.Boolean('Apply Special Price')
     type_special_price = fields.Selection([
             ('price', 'Special Price'),
