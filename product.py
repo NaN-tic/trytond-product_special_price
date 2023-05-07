@@ -6,7 +6,6 @@ from trytond.pool import Pool, PoolMeta
 from trytond.model import ModelSQL, fields
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
-from trytond.tools.multivalue import migrate_property
 
 from trytond.modules.product.product import price_digits
 from trytond.modules.company.model import CompanyValueMixin
@@ -46,24 +45,6 @@ class ProductSpecialPrice(ModelSQL, CompanyValueMixin):
             'company': Eval('company'),
             }, depends=['company'])
     special_price = fields.Numeric("Special Price", digits=price_digits)
-
-    @classmethod
-    def __register__(cls, module_name):
-        exist = backend.TableHandler.table_exist(cls._table)
-
-        super(ProductSpecialPrice, cls).__register__(module_name)
-
-        if not exist:
-            cls._migrate_property([], [], [])
-
-    @classmethod
-    def _migrate_property(cls, field_names, value_names, fields):
-        field_names.append('special_price')
-        value_names.append('special_price')
-        fields.append('company')
-        migrate_property(
-            'product.template', field_names, cls, value_names,
-            parent='template', fields=fields)
 
 
 class Product(metaclass=PoolMeta):
