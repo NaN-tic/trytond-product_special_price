@@ -41,7 +41,7 @@ class ProductSpecialPrice(ModelSQL, CompanyValueMixin):
     template = fields.Many2One(
         'product.template', "Template", ondelete='CASCADE',
         context={
-            'company': Eval('company'),
+            'company': Eval('company', -1),
             }, depends=['company'])
     special_price = fields.Numeric("Special Price", digits=price_digits)
 
