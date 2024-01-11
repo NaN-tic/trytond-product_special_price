@@ -14,14 +14,13 @@ __all__ = ['Template', 'ProductSpecialPrice', 'Product']
 STATES = {
     'readonly': ~Eval('active', True),
     }
-DEPENDS = ['active']
 
 
 class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
     special_price = fields.MultiValue(fields.Numeric(
             "Special Price", digits=price_digits,
-            states=STATES, depends=DEPENDS))
+            states=STATES))
     special_prices = fields.One2Many(
         'product.special_price', 'template', "Special Prices")
     special_price_from = fields.Date('Special Price From')
