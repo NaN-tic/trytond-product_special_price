@@ -79,13 +79,12 @@ class Product(metaclass=PoolMeta):
                         uom = Uom(uom_id)
                     else:
                         uom = product.default_uom
-                    special_price = price_list.compute(customer, product,
-                        prices[product.id], quantity, uom)
+                    special_price = price_list.compute(product, quantity, uom)
                 else:
                     special_price = product.special_price
 
                 if (special_price != 0.0
                         and special_price is not None
-                        and special_price < prices[product.id]):
+                        and special_price < (prices[product.id] or 0)):
                     prices[product.id] = special_price
         return prices
