@@ -9,18 +9,11 @@ from trytond.transaction import Transaction
 from trytond.modules.product.product import price_digits
 from trytond.modules.company.model import CompanyValueMixin
 
-__all__ = ['Template', 'ProductSpecialPrice', 'Product']
-
-STATES = {
-    'readonly': ~Eval('active', True),
-    }
-
 
 class Template(metaclass=PoolMeta):
     __name__ = 'product.template'
     special_price = fields.MultiValue(fields.Numeric(
-            "Special Price", digits=price_digits,
-            states=STATES))
+            "Special Price", digits=price_digits))
     special_prices = fields.One2Many(
         'product.special_price', 'template', "Special Prices")
     special_price_from = fields.Date('Special Price From')
@@ -73,7 +66,6 @@ class Product(metaclass=PoolMeta):
                 special_price = 0.0
                 if user.shop.type_special_price == 'pricelist':
                     price_list = user.shop.special_pricelist
-                    customer = Transaction().context.get('customer', None)
                     uom_id = Transaction().context.get('uom', None)
                     if uom_id:
                         uom = Uom(uom_id)
